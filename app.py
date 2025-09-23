@@ -1,5 +1,6 @@
 import streamlit as st
 from dotenv import load_dotenv
+from agents.web_scrapper import WebScraperAgent
 
 load_dotenv()
 
@@ -11,8 +12,19 @@ st.caption("Day 1: Skeleton app — inputs only, no pipeline yet")
 url = st.text_input("Web page URL", placeholder="https://example.com/article")
 question = st.text_area("Your question", placeholder="Ask something about the page...")
 
-if st.button("Run Agent", type="primary"):
-    if not url or not question:
-        st.error("Please provide both a URL and a question.")
+if st.button("Fetch"):
+    if not url:
+        st.error("Please provide a URL.")
     else:
-        st.info("🚧 Day 1 scaffold only — agents will be added later.")
+        try:
+            scraper = WebScraperAgent()
+            result = scraper.fetch(url)
+            st.success("Fetched successfully")
+            st.write(f"**Title:** {result.title or '(none)'}")
+            st.write(f"**URL:** {result.url}")
+            st.write(f"**HTML length:** {len(result.html):,} chars")
+            st.write(f"**Text length:** {len(result.text):,} chars")
+            st.markdown("### Preview (first 1200 chars)")
+            st.code(result.text[:1200] + ('...' if len(result.text) > 1200 else ''), language="markdown")
+        except Exception as e:
+            st.error(f"Failed to fetch: {e}")
