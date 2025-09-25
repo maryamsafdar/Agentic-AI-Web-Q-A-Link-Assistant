@@ -14,6 +14,10 @@ class ProcessResult:
     chunks: List[str]
     highlights: List[str]
     top_chunk_indices: List[int]
+    method: str  # "tfidf" | "jaccard"
+   
+
+    
 
 @dataclass
 class QnAResult:
