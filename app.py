@@ -2,14 +2,14 @@ import os
 import json
 import time
 import traceback
-from dataclasses import asdict  # ✅ for dict-ifying dataclasses
+from dataclasses import asdict  
 import streamlit as st
 from dotenv import load_dotenv
 from orchestrator import OrchestratorAgent
 
 # ---------- Boot ----------
 load_dotenv()
-st.set_page_config(page_title="Day 5 — Agentic Q&A Dashboard", page_icon="🧪", layout="wide")
+st.set_page_config(page_title="Agentic AI Web Q&A Assistent", page_icon="🕸️", layout="wide")
 
 # ---------- CSS ----------
 st.markdown("""
@@ -25,32 +25,61 @@ html, body, [data-testid="stAppViewContainer"] {
               radial-gradient(1200px 900px at 100% 0%, rgba(236,72,153,0.10), transparent 60%);
 }
 .hero {
-  padding: 20px 22px; border-radius: 16px; background: var(--grad); color: #fff !important;
+  padding: 20px 22px; 
+  border-radius: 16px; 
+  background: var(--grad); 
+  color: #fff !important;
+  text-align: center;   /* ✅ Center align hero content */
   box-shadow: 0 10px 30px rgba(0,0,0,0.25);
 }
-.hero h1, .hero p { color: #fff !important; margin: 0 !important; }
-.card { background: var(--panel); border: 1px solid var(--border); border-radius: 14px; padding: 16px; }
+.hero h1, .hero p { 
+  color: #fff !important; 
+  margin: 0 !important; 
+}
+.card { 
+  background: var(--panel); 
+  border: 1px solid var(--border); 
+  border-radius: 14px; 
+  padding: 16px; 
+}
 .badge {
-  display:inline-flex; gap:8px; align-items:center; padding:6px 10px; border-radius:10px;
-  border:1px solid var(--border); background:rgba(255,255,255,0.04); font-size:0.92rem;
+  display:inline-flex; 
+  gap:8px; 
+  align-items:center; 
+  padding:6px 10px; 
+  border-radius:10px;
+  border:1px solid var(--border); 
+  background:rgba(255,255,255,0.04); 
+  font-size:0.92rem;
 }
 .snip {
-  border-left: 3px solid #0ea5e9; background: rgba(255,255,255,0.03);
-  padding: 10px 12px; border-radius: 8px; margin-bottom: 8px;
+  border-left: 3px solid #0ea5e9; 
+  background: rgba(255,255,255,0.03);
+  padding: 10px 12px; 
+  border-radius: 8px; 
+  margin-bottom: 8px;
 }
-.small { color: var(--muted); font-size: 0.92rem; }
-textarea[placeholder*="Enter one question per line"] { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; }
+.small { 
+  color: var(--muted); 
+  font-size: 0.92rem; 
+}
+textarea[placeholder*="Enter one question per line"] { 
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; 
+}
 </style>
 """, unsafe_allow_html=True)
 
 # ---------- Header ----------
 st.markdown("""
 <div class="hero">
-  <h1>Day 5 — Agentic Web Link Q&A</h1>
+  <h1>🕸️ Agentic AI Web Q&A Assistent</h1>
   <p>Scrape → Clean → Highlight → Answer (LLM with fallback) • Multi-question • Summary • Caching</p>
 </div>
 """, unsafe_allow_html=True)
 st.write("")
+
+
+
 
 # ---------- Sidebar ----------
 api_key_status = "✅ Found" if os.getenv("OPENAI_API_KEY") else "⚠️ Missing (using fallback)"
